@@ -713,6 +713,16 @@ async function start() {
     }
 }
 
-start();
+// start();
+
+mongoose.connect(MONGODB_URI, { autoIndex: true })
+  .then(() => ensureDefaultUser().catch(e => console.error('seed err', e)))
+  .catch(err => {
+    console.error('Mongoose connect error on startup', err);
+    // Note: don't process.exit in serverless environment
+  });
+
+// Export app for Vercel
+module.exports = app;
 
 
